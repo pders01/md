@@ -8,38 +8,16 @@ import chalk from 'chalk';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Check if we're in bundled mode (assets will be embedded)
-const isBundled = typeof EMBEDDED_ASSETS !== 'undefined';
+// Check if we're in bundled mode by checking if we're running from a bundled location
+const isBundled = __dirname.includes('Cellar') || __dirname.includes('dist');
 
 export function startServer({ port = 3000, directory = '.', host = 'localhost' }) {
   const app = express();
   
   if (isBundled) {
-    // Serve embedded static assets
-    app.get('/static/tailwind.css', (req, res) => {
-      res.type('text/css');
-      res.send(EMBEDDED_ASSETS.tailwind);
-    });
-    
-    app.get('/static/styles.css', (req, res) => {
-      res.type('text/css');
-      res.send(EMBEDDED_ASSETS.styles);
-    });
-    
-    app.get('/static/prism-light.css', (req, res) => {
-      res.type('text/css');
-      res.send(EMBEDDED_ASSETS.prismLight);
-    });
-    
-    app.get('/static/prism-dark.css', (req, res) => {
-      res.type('text/css');
-      res.send(EMBEDDED_ASSETS.prismDark);
-    });
-    
-    app.get('/static/prism.js', (req, res) => {
-      res.type('application/javascript');
-      res.send(EMBEDDED_ASSETS.prismJs);
-    });
+    // In bundled mode, serve static assets from the dist directory
+    const staticPath = path.join(__dirname, 'public');
+    app.use('/static', express.static(staticPath));
   } else {
     // Serve static files from the public directory (development mode)
     app.use('/static', express.static(path.join(__dirname, '../public')));
@@ -279,11 +257,38 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
 async function generateHTML(content, currentPath, showBackButton = false) {
   let template;
   
-  if (isBundled) {
-    template = EMBEDDED_ASSETS.template;
-  } else {
-    const templatePath = path.join(__dirname, '../public/template.html');
-    template = await fs.readFile(templatePath, 'utf-8');
+  try {
+    if (isBundled) {
+      // In bundled mode, read from the dist directory
+      const templatePath = path.join(__dirname, 'template.html');
+      template = await fs.readFile(templatePath, 'utf-8');
+    } else {
+      const templatePath = path.join(__dirname, '../public/template.html');
+      template = await fs.readFile(templatePath, 'utf-8');
+    }
+  } catch (error) {
+    // Fallback template if we can't load the template file
+    template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/static/tailwind.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/prism-light.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="/static/prism-dark.css" media="(prefers-color-scheme: dark)">
+    <script src="/static/prism.js"></script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        {{#if showBackButton}}<a href=".." class="inline-block mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">← Back</a>{{/if}}
+        <div class="prose prose-lg dark:prose-invert max-w-none">
+            {{content}}
+        </div>
+    </div>
+</body>
+</html>`;
   }
   
   const title = currentPath === '/' ? 'Markdown Files' : currentPath;
