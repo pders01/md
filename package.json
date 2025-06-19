@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "type": "module",
   "bin": {
-    "md-server": "./cli.js"
+    "md-server": "./dist/md-server.js"
   },
   "scripts": {
     "start": "node cli.js",

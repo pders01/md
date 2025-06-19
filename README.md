@@ -19,33 +19,76 @@ _This project was **vibe coded** with AI pair programming!_
 - 💻 **Syntax Highlighting**: Code blocks with Prism.js (light/twilight themes)
 - 🎯 **Minimal UI**: Clean, distraction-free reading experience
 
-## Usage
+## Installation
 
-### Installation
+### Option 1: Homebrew (Recommended)
 
 ```bash
-pnpm install
+# Add the tap
+brew tap pders01/md
+
+# Install the CLI
+brew install md-server
 ```
 
-### Building the CLI (Single File)
+### Option 2: Manual Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/pders01/md.git
+cd md
+
+# Install dependencies
+pnpm install
+
+# Build the CLI
 pnpm run build
 ```
 
-This will generate a single executable CLI at `dist/md-server.js`.
+### Option 3: Global Symlink (Development)
+
+For easy development and testing, you can create a global symlink:
+
+```bash
+# From the project directory
+pnpm link
+
+# Now you can run from anywhere
+md-server --port 3000
+```
+
+Or use the provided install script:
+
+```bash
+# Run the install script (requires sudo)
+./scripts/install.sh
+```
+
+Or create a manual symlink:
+
+```bash
+# Create a symlink to the built CLI
+ln -s "$(pwd)/dist/md-server.js" /usr/local/bin/md-server
+
+# Make it executable
+chmod +x /usr/local/bin/md-server
+
+# Now you can run from anywhere
+md-server --port 3000
+```
+
+To uninstall, run: `sudo rm /usr/local/bin/md-server` or use `./scripts/uninstall.sh`
+
+## Usage
 
 ### Running the Server
 
 ```bash
 # Start with default settings (port 3000, current directory)
-pnpm start
-
-# Or run the bundled CLI
-node dist/md-server.js
+md-server
 
 # Custom port and directory
-node dist/md-server.js --port 8080 --directory ./docs
+md-server --port 8080 --directory ./docs
 ```
 
 ### Command Line Options
@@ -60,13 +103,13 @@ node dist/md-server.js --port 8080 --directory ./docs
 
 ```bash
 # Serve markdown files from current directory
-node dist/md-server.js
+md-server
 
 # Serve from a specific directory
-node dist/md-server.js --directory ./my-docs
+md-server --directory ./my-docs
 
 # Use a different port
-node dist/md-server.js --port 8080
+md-server --port 8080
 ```
 
 ### File Access
@@ -183,6 +226,19 @@ For more detailed information, see:
 
 - **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Development setup, project structure, and contribution guidelines
 - **[Markdown Features](docs/MARKDOWN_FEATURES.md)** - Complete demonstration of all supported markdown features
+
+## Homebrew Tap Setup
+
+To make this available via Homebrew, you'll need to:
+
+1. Create a new repository named `homebrew-md` (or similar)
+2. Copy the `Formula/` directory to the new repository
+3. Update the formula URL to point to your repository
+4. Users can then install with:
+   ```bash
+   brew tap pders01/md
+   brew install md-server
+   ```
 
 ## License
 
