@@ -1,29 +1,47 @@
 {
-  "name": "md-server",
+  "name": "@jpahd/md-server",
   "version": "1.0.0",
   "description": "A CLI tool that serves markdown files as HTML with Tailwind styling",
   "main": "src/server.js",
   "type": "module",
   "bin": {
-    "md-server": "./dist/md-server.js"
+    "md-server": "./dist/index.js"
   },
+  "files": [
+    "dist/",
+    "package.json"
+  ],
   "scripts": {
-    "start": "node cli.js",
+    "start": "node dist/index.js",
     "dev": "node cli.js --port 3000",
-    "build": "node scripts/build.js",
+    "build": "ncc build cli.js -o dist",
     "build:css": "tailwindcss -i src/styles/tailwind.css -o public/tailwind.css --minify",
     "watch": "tailwindcss -i src/styles/tailwind.css -o public/tailwind.css --watch",
-    "preview": "node dist/md-server.js --port 3000"
+    "preview": "node dist/md-server.js --port 3000",
+    "prepublishOnly": "npm run build:css && npm run build"
   },
   "keywords": [
     "markdown",
     "server",
     "cli",
     "html",
-    "tailwind"
+    "tailwind",
+    "static-site",
+    "documentation"
   ],
-  "author": "",
+  "author": "pders01",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pders01/md.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pders01/md/issues"
+  },
+  "homepage": "https://github.com/pders01/md#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
@@ -36,6 +54,7 @@
     "@tailwindcss/cli": "^4.1.10",
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20.10.0",
+    "@vercel/ncc": "^0.38.3",
     "tailwindcss": "^4.1.10",
     "vite": "^6.3.5"
   }
