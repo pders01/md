@@ -15,8 +15,15 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
   const app = express();
   
   if (isBundled) {
-    // In bundled mode, serve static assets from the dist directory
-    const staticPath = path.join(__dirname, 'public');
+    // In bundled mode, serve static assets from the correct location
+    let staticPath;
+    if (__dirname.includes('Cellar')) {
+      // Homebrew installation - assets are in libexec
+      staticPath = path.join(__dirname, '../libexec/public');
+    } else {
+      // Local bundled development - assets are in dist/public
+      staticPath = path.join(__dirname, 'public');
+    }
     app.use('/static', express.static(staticPath));
   } else {
     // Serve static files from the public directory (development mode)
@@ -259,8 +266,15 @@ async function generateHTML(content, currentPath, showBackButton = false) {
   
   try {
     if (isBundled) {
-      // In bundled mode, read from the dist directory
-      const templatePath = path.join(__dirname, 'template.html');
+      // In bundled mode, read from the correct location
+      let templatePath;
+      if (__dirname.includes('Cellar')) {
+        // Homebrew installation - template is in libexec
+        templatePath = path.join(__dirname, '../libexec/template.html');
+      } else {
+        // Local bundled development - template is in dist
+        templatePath = path.join(__dirname, 'template.html');
+      }
       template = await fs.readFile(templatePath, 'utf-8');
     } else {
       const templatePath = path.join(__dirname, '../public/template.html');

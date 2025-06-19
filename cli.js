@@ -3,13 +3,30 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { startServer } from './src/server.js';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Read version from package.json
+let version = '1.0.0'; // fallback
+try {
+  const packagePath = join(__dirname, 'package.json');
+  const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'));
+  version = packageJson.version;
+} catch (error) {
+  // If we can't read package.json, use fallback version
+  console.warn('Warning: Could not read version from package.json, using fallback');
+}
 
 const program = new Command();
 
 program
   .name('md-server')
   .description('A CLI tool that serves markdown files as HTML with Tailwind styling')
-  .version('1.0.0')
+  .version(version)
   .option('-p, --port <port>', 'Port to run the server on', '3000')
   .option('-d, --directory <dir>', 'Directory to serve markdown files from', '.')
   .option('-h, --host <host>', 'Host to bind the server to', 'localhost')
