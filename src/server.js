@@ -56,15 +56,12 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
       }
       
       const fileList = markdownFiles.map(file => 
-        `<li><a href="/${file}" class="text-blue-600 hover:text-blue-800 underline font-medium">${file}</a></li>`
+        `<a href="/${file}" class="file-link">${file}</a>`
       ).join('');
       
       const html = `
-        <h1>Available Markdown Files</h1>
-        <p class="text-gray-600 mb-6">Click on any file below to view it with beautiful typography:</p>
-        <ul class="space-y-3">
-          ${fileList}
-        </ul>
+        <h1>${markdownFiles.length} file${markdownFiles.length === 1 ? '' : 's'}</h1>
+        ${fileList}
       `;
       
       res.send(generateHTML(html, '/'));
@@ -90,9 +87,43 @@ function generateHTML(content, currentPath) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown Viewer - ${currentPath}</title>
+    <title>${currentPath === '/' ? 'Markdown Files' : currentPath}</title>
     <link href="/static/tailwind.css" rel="stylesheet">
     <style>
+        :root {
+            --bg-primary: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #374151;
+            --border-color: #e5e7eb;
+            --link-color: #2563eb;
+            --link-hover: #1d4ed8;
+            --blockquote-bg: #f8fafc;
+            --blockquote-border: #3b82f6;
+            --table-header-bg: #f9fafb;
+            --table-border: #e5e7eb;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #111827;
+                --text-primary: #f9fafb;
+                --text-secondary: #d1d5db;
+                --border-color: #4b5563;
+                --link-color: #60a5fa;
+                --link-hover: #93c5fd;
+                --blockquote-bg: #1e293b;
+                --blockquote-border: #3b82f6;
+                --table-header-bg: #374151;
+                --table-border: #4b5563;
+            }
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.2s, color 0.2s;
+        }
+        
         .prose {
             max-width: 65ch;
             margin: 0 auto;
@@ -125,8 +156,8 @@ function generateHTML(content, currentPath) {
         .prose blockquote {
             margin: 1.5rem 0;
             padding: 0.75rem 1rem;
-            background-color: #f8fafc;
-            border-left: 4px solid #3b82f6;
+            background-color: var(--blockquote-bg);
+            border-left: 4px solid var(--blockquote-border);
             border-radius: 0.375rem;
         }
         .prose pre {
@@ -140,11 +171,12 @@ function generateHTML(content, currentPath) {
         }
         .prose th, .prose td {
             padding: 0.75rem;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--table-border);
         }
         .prose th {
-            background-color: #f9fafb;
+            background-color: var(--table-header-bg);
             font-weight: 600;
+            color: var(--text-primary);
         }
         .prose img {
             margin: 1.5rem auto;
@@ -153,52 +185,44 @@ function generateHTML(content, currentPath) {
         .prose hr {
             margin: 2rem 0;
             border: none;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid var(--border-color);
+        }
+        .file-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .file-link:hover {
+            color: var(--link-hover);
+        }
+        .back-link {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--link-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .back-link:hover {
+            opacity: 1;
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-4xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                    </div>
-                    <h1 class="text-xl font-semibold text-gray-900">Markdown Viewer</h1>
-                </div>
-                <a href="/" class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Back to files
-                </a>
-            </div>
-        </div>
-    </nav>
+<body>
+    ${currentPath !== '/' ? '<a href="/" class="back-link">←</a>' : ''}
     
     <main class="max-w-4xl mx-auto px-4 py-8">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="p-8">
-                <article class="prose prose-lg prose-blue max-w-none">
-                    ${content}
-                </article>
-            </div>
+        <div class="prose prose-lg prose-gray dark:prose-invert max-w-none">
+            ${content}
         </div>
     </main>
-    
-    <footer class="max-w-4xl mx-auto px-4 py-6 text-center">
-        <div class="text-gray-500 text-sm">
-            <p class="flex items-center justify-center space-x-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
-                <span>Powered by md-server</span>
-            </p>
-        </div>
-    </footer>
 </body>
 </html>`;
 } 

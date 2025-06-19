@@ -4,6 +4,7 @@ module.exports = {
     './cli.js',
     './public/**/*.html',
   ],
+  darkMode: 'media',
   theme: {
     extend: {},
   },
