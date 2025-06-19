@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { startServer } from './server.js';
+import { startServer } from './src/server.js';
 
 const program = new Command();
 

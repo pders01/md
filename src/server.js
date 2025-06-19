@@ -11,6 +11,9 @@ const __dirname = path.dirname(__filename);
 export function startServer({ port = 3000, directory = '.', host = 'localhost' }) {
   const app = express();
   
+  // Serve static files from the public directory
+  app.use('/static', express.static(path.join(__dirname, '../public')));
+  
   // Handle markdown files first (before static files)
   app.get('/:filename.md', async (req, res) => {
     try {
@@ -88,93 +91,7 @@ function generateHTML(content, currentPath) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Markdown Viewer - ${currentPath}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    typography: {
-                        DEFAULT: {
-                            css: {
-                                maxWidth: 'none',
-                                color: '#374151',
-                                a: {
-                                    color: '#2563eb',
-                                    '&:hover': {
-                                        color: '#1d4ed8',
-                                    },
-                                },
-                                h1: {
-                                    color: '#111827',
-                                    fontWeight: '700',
-                                },
-                                h2: {
-                                    color: '#1f2937',
-                                    fontWeight: '600',
-                                },
-                                h3: {
-                                    color: '#1f2937',
-                                    fontWeight: '600',
-                                },
-                                h4: {
-                                    color: '#1f2937',
-                                    fontWeight: '600',
-                                },
-                                code: {
-                                    color: '#dc2626',
-                                    backgroundColor: '#f3f4f6',
-                                    padding: '0.125rem 0.25rem',
-                                    borderRadius: '0.25rem',
-                                    fontSize: '0.875rem',
-                                },
-                                'code::before': {
-                                    content: '""',
-                                },
-                                'code::after': {
-                                    content: '""',
-                                },
-                                pre: {
-                                    backgroundColor: '#1f2937',
-                                    color: '#f9fafb',
-                                    overflow: 'auto',
-                                    borderRadius: '0.5rem',
-                                },
-                                'pre code': {
-                                    backgroundColor: 'transparent',
-                                    padding: '0',
-                                    color: 'inherit',
-                                },
-                                blockquote: {
-                                    borderLeftColor: '#d1d5db',
-                                    fontStyle: 'italic',
-                                },
-                                table: {
-                                    fontSize: '0.875rem',
-                                },
-                                thead: {
-                                    borderBottomColor: '#d1d5db',
-                                },
-                                'thead th': {
-                                    color: '#374151',
-                                    fontWeight: '600',
-                                },
-                                'tbody tr': {
-                                    borderBottomColor: '#e5e7eb',
-                                },
-                                'tbody tr:last-child': {
-                                    borderBottomWidth: '0',
-                                },
-                                img: {
-                                    borderRadius: '0.5rem',
-                                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-        }
-    </script>
+    <link href="/static/tailwind.css" rel="stylesheet">
     <style>
         .prose {
             max-width: 65ch;
