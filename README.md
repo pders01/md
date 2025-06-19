@@ -231,8 +231,8 @@ For more detailed information, see:
 
 To make this available via Homebrew, you'll need to:
 
-1. Create a new repository named `homebrew-md` (or similar)
-2. Copy the `Formula/` directory to the new repository
+1. Create a new repository named `homebrew-md`
+2. Copy the `Formula/` directory to that repository
 3. Update the formula URL to point to your repository
 4. Users can then install with:
    ```bash
