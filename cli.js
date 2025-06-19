@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { startServer } from './src/server.js';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -13,7 +13,11 @@ const __dirname = dirname(__filename);
 // Read version from package.json
 let version = '1.0.0'; // fallback
 try {
-  const packagePath = join(__dirname, 'package.json');
+  let packagePath = join(__dirname, 'package.json');
+  if (!existsSync(packagePath) && __dirname.includes('Cellar')) {
+    // Homebrew install: look in ../libexec/
+    packagePath = join(__dirname, '../libexec/package.json');
+  }
   const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'));
   version = packageJson.version;
 } catch (error) {
