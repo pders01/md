@@ -8,11 +8,42 @@ import chalk from 'chalk';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Check if we're in bundled mode (assets will be embedded)
+const isBundled = typeof EMBEDDED_ASSETS !== 'undefined';
+
 export function startServer({ port = 3000, directory = '.', host = 'localhost' }) {
   const app = express();
   
-  // Serve static files from the public directory
-  app.use('/static', express.static(path.join(__dirname, '../public')));
+  if (isBundled) {
+    // Serve embedded static assets
+    app.get('/static/tailwind.css', (req, res) => {
+      res.type('text/css');
+      res.send(EMBEDDED_ASSETS.tailwind);
+    });
+    
+    app.get('/static/styles.css', (req, res) => {
+      res.type('text/css');
+      res.send(EMBEDDED_ASSETS.styles);
+    });
+    
+    app.get('/static/prism-light.css', (req, res) => {
+      res.type('text/css');
+      res.send(EMBEDDED_ASSETS.prismLight);
+    });
+    
+    app.get('/static/prism-dark.css', (req, res) => {
+      res.type('text/css');
+      res.send(EMBEDDED_ASSETS.prismDark);
+    });
+    
+    app.get('/static/prism.js', (req, res) => {
+      res.type('application/javascript');
+      res.send(EMBEDDED_ASSETS.prismJs);
+    });
+  } else {
+    // Serve static files from the public directory (development mode)
+    app.use('/static', express.static(path.join(__dirname, '../public')));
+  }
   
   // Handle markdown files first (before static files)
   app.get('/:filename.md', async (req, res) => {
@@ -83,8 +114,14 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
 }
 
 async function generateHTML(content, currentPath, showBackButton = false) {
-  const templatePath = path.join(__dirname, '../public/template.html');
-  let template = await fs.readFile(templatePath, 'utf-8');
+  let template;
+  
+  if (isBundled) {
+    template = EMBEDDED_ASSETS.template;
+  } else {
+    const templatePath = path.join(__dirname, '../public/template.html');
+    template = await fs.readFile(templatePath, 'utf-8');
+  }
   
   const title = currentPath === '/' ? 'Markdown Files' : currentPath;
   

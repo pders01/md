@@ -10,8 +10,10 @@
   "scripts": {
     "start": "node cli.js",
     "dev": "node cli.js --port 3000",
+    "build": "node scripts/build.js",
     "build:css": "tailwindcss -i src/styles/tailwind.css -o public/tailwind.css --minify",
-    "watch": "tailwindcss -i src/styles/tailwind.css -o public/tailwind.css --watch"
+    "watch": "tailwindcss -i src/styles/tailwind.css -o public/tailwind.css --watch",
+    "preview": "node dist/md-server.js --port 3000"
   },
   "keywords": [
     "markdown",
@@ -34,6 +36,7 @@
     "@tailwindcss/cli": "^4.1.10",
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20.10.0",
-    "tailwindcss": "^4.1.10"
+    "tailwindcss": "^4.1.10",
+    "vite": "^6.3.5"
   }
 }
