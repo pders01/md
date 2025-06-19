@@ -1,6 +1,6 @@
 {
   "name": "@jpahd/md-server",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A CLI tool that serves markdown files as HTML with Tailwind styling",
   "main": "src/server.js",
   "type": "module",
