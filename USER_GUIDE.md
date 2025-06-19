@@ -2,6 +2,12 @@
 
 A simple CLI tool that serves markdown files as HTML with beautiful Tailwind CSS styling and automatic dark/light theme support.
 
+---
+
+_This project was **vibe coded** with AI pair programming!_
+
+---
+
 ## Features
 
 - 🚀 **Fast & Lightweight**: Built with Express.js
@@ -21,17 +27,25 @@ A simple CLI tool that serves markdown files as HTML with beautiful Tailwind CSS
 pnpm install
 ```
 
+### Building the CLI (Single File)
+
+```bash
+pnpm run build
+```
+
+This will generate a single executable CLI at `dist/md-server.js`.
+
 ### Running the Server
 
 ```bash
 # Start with default settings (port 3000, current directory)
 pnpm start
 
-# Or run directly
-node cli.js
+# Or run the bundled CLI
+node dist/md-server.js
 
 # Custom port and directory
-node cli.js --port 8080 --directory ./docs
+node dist/md-server.js --port 8080 --directory ./docs
 ```
 
 ### Command Line Options
@@ -46,13 +60,13 @@ node cli.js --port 8080 --directory ./docs
 
 ```bash
 # Serve markdown files from current directory
-node cli.js
+node dist/md-server.js
 
 # Serve from a specific directory
-node cli.js --directory ./my-docs
+node dist/md-server.js --directory ./my-docs
 
 # Use a different port
-node cli.js --port 8080
+node dist/md-server.js --port 8080
 ```
 
 ### File Access
@@ -135,6 +149,7 @@ md/
 │   ├── prism-light.css # Light theme
 │   └── prism-dark.css  # Dark theme (twilight)
 ├── tailwind.config.js  # Tailwind configuration
+├── vite.config.js      # Vite configuration
 └── package.json        # Dependencies and scripts
 ```
 
@@ -160,6 +175,7 @@ pnpm run dev
 - **prismjs**: Syntax highlighting
 - **tailwindcss**: Styling framework
 - **@tailwindcss/typography**: Typography plugin
+- **vite**: Bundler for development and production
 
 ## License
 

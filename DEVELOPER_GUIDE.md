@@ -2,6 +2,12 @@
 
 A simple and beautiful CLI tool that serves markdown files as HTML with Tailwind CSS styling.
 
+---
+
+_This project was **vibe coded** with AI pair programming!_
+
+---
+
 ## 🚀 Quick Start
 
 1. **Install dependencies:**
@@ -9,12 +15,19 @@ A simple and beautiful CLI tool that serves markdown files as HTML with Tailwind
    pnpm install
    ```
 
-2. **Start the server:**
+2. **Build the CLI (single file):**
    ```bash
-   pnpm start
+   pnpm run build
    ```
 
-3. **Open your browser:**
+   This will generate `dist/md-server.js`.
+
+3. **Start the server:**
+   ```bash
+   node dist/md-server.js
+   ```
+
+4. **Open your browser:**
    Navigate to `http://localhost:3000`
 
 ## 📖 Usage
@@ -23,16 +36,16 @@ A simple and beautiful CLI tool that serves markdown files as HTML with Tailwind
 
 ```bash
 # Start with default settings (port 3000, current directory)
-node cli.js
+node dist/md-server.js
 
 # Use a different port
-node cli.js --port 8080
+node dist/md-server.js --port 8080
 
 # Serve from a specific directory
-node cli.js --directory ./docs
+node dist/md-server.js --directory ./docs
 
 # Use a different host
-node cli.js --host 0.0.0.0
+node dist/md-server.js --host 0.0.0.0
 ```
 
 ### Command Line Options
@@ -47,13 +60,13 @@ node cli.js --host 0.0.0.0
 
 ```bash
 # Serve markdown files from current directory
-node cli.js
+node dist/md-server.js
 
 # Serve from a documentation folder on port 8080
-node cli.js --port 8080 --directory ./docs
+node dist/md-server.js --port 8080 --directory ./docs
 
 # Make server accessible from other devices
-node cli.js --host 0.0.0.0 --port 3000
+node dist/md-server.js --host 0.0.0.0 --port 3000
 ```
 
 ## 🌟 Features
@@ -64,6 +77,8 @@ node cli.js --host 0.0.0.0 --port 3000
 - **Full Markdown Support**: Headers, lists, code blocks, tables, links, images, and more
 - **Fast & Lightweight**: Built with Express.js
 - **Cross-platform**: Works on Windows, macOS, and Linux
+- **Single-file CLI**: Easy to install and distribute
+- **Vite-powered**: Modern build and dev workflow
 
 ## 📁 File Access
 
@@ -89,20 +104,30 @@ The server uses Tailwind CSS for beautiful, responsive styling:
 - **marked**: Markdown parser
 - **commander**: CLI argument parsing
 - **chalk**: Terminal color output
-- **tailwindcss**: Styling (via CDN)
+- **tailwindcss**: Styling
+- **vite**: Bundler for dev and production
 
-## 🔧 Development
+## 🛠 Development
 
 ### Project Structure
 
 ```
 md-server/
 ├── cli.js              # CLI entry point
-├── server.js           # Express server logic
-├── package.json        # Dependencies and scripts
-├── README.md           # Main documentation
-├── example.md          # Example markdown file
-└── PROJECT_README.md   # This file
+├── src/
+│   ├── server.js       # Express server logic
+│   └── styles/
+│       └── tailwind.css # Tailwind source styles
+├── public/
+│   ├── styles.css      # Custom styles
+│   ├── template.html   # HTML template
+│   ├── tailwind.css    # Built Tailwind CSS
+│   ├── prism.js        # Syntax highlighting
+│   ├── prism-light.css # Light theme
+│   └── prism-dark.css  # Dark theme (twilight)
+├── tailwind.config.js  # Tailwind configuration
+├── vite.config.js      # Vite configuration
+└── package.json        # Dependencies and scripts
 ```
 
 ### Running in Development
@@ -111,11 +136,11 @@ md-server/
 # Install dependencies
 pnpm install
 
-# Start development server
-pnpm dev
+# Build CSS
+pnpm run build:css
 
-# Or run directly
-node cli.js --port 3000
+# Start development server
+pnpm run dev
 ```
 
 ## 📝 Supported Markdown Features

@@ -81,4 +81,8 @@ for i in range(10):
 
 ---
 
-*This document demonstrates the full range of markdown features supported by our server!* 
+*This document demonstrates the full range of markdown features supported by our server!*
+
+---
+
+_Vibe coded with AI pair programming!_ 
