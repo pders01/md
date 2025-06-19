@@ -177,6 +177,13 @@ pnpm run dev
 - **@tailwindcss/typography**: Typography plugin
 - **vite**: Bundler for development and production
 
+## Documentation
+
+For more detailed information, see:
+
+- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Development setup, project structure, and contribution guidelines
+- **[Markdown Features](docs/MARKDOWN_FEATURES.md)** - Complete demonstration of all supported markdown features
+
 ## License
 
 MIT License - feel free to use this project for your own needs! 
