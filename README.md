@@ -1,14 +1,17 @@
 # Markdown Server
 
-A simple CLI tool that serves markdown files as HTML with beautiful Tailwind CSS styling.
+A simple CLI tool that serves markdown files as HTML with beautiful Tailwind CSS styling and automatic dark/light theme support.
 
 ## Features
 
 - 🚀 **Fast & Lightweight**: Built with Express.js
-- 🎨 **Beautiful Styling**: Uses Tailwind CSS for modern, responsive design
+- 🎨 **Beautiful Styling**: Uses Tailwind CSS with typography plugin
+- 🌙 **Dark/Light Mode**: Automatic theme switching based on system preferences
 - 📁 **Directory Listing**: Automatically lists all markdown files in the directory
 - 🔗 **Smart URLs**: Access files with or without the `.md` extension
 - 📱 **Responsive**: Works great on desktop and mobile devices
+- 💻 **Syntax Highlighting**: Code blocks with Prism.js (light/twilight themes)
+- 🎯 **Minimal UI**: Clean, distraction-free reading experience
 
 ## Usage
 
@@ -43,13 +46,13 @@ node cli.js --port 8080 --directory ./docs
 
 ```bash
 # Serve markdown files from current directory
-md-server
+node cli.js
 
 # Serve from a specific directory
-md-server --directory ./my-docs
+node cli.js --directory ./my-docs
 
 # Use a different port
-md-server --port 8080
+node cli.js --port 8080
 ```
 
 ### File Access
@@ -62,7 +65,7 @@ Once the server is running, you can access your markdown files at:
 
 ## Markdown Features
 
-The server supports all standard markdown features:
+The server supports all standard markdown features with enhanced styling:
 
 ### Headers
 
@@ -86,7 +89,7 @@ The server supports all standard markdown features:
 Inline code: `console.log('Hello, World!')`
 
 ```javascript
-// Code block
+// Code block with syntax highlighting
 function greet(name) {
   return `Hello, ${name}!`;
 }
@@ -104,6 +107,8 @@ function greet(name) {
 |---------|-------------|--------|
 | Markdown Support | Full markdown parsing | ✅ |
 | Tailwind Styling | Beautiful, responsive design | ✅ |
+| Dark/Light Mode | Automatic theme switching | ✅ |
+| Syntax Highlighting | Prism.js with light/twilight themes | ✅ |
 | Directory Listing | Auto-generated file index | ✅ |
 | CLI Interface | Easy command-line usage | ✅ |
 
@@ -116,11 +121,34 @@ function greet(name) {
 ### Project Structure
 
 ```
-md-server/
-├── cli.js          # CLI entry point
-├── server.js       # Express server logic
-├── package.json    # Dependencies and scripts
-└── README.md       # This file
+md/
+├── cli.js              # CLI entry point
+├── src/
+│   ├── server.js       # Express server logic
+│   └── styles/
+│       └── tailwind.css # Tailwind source styles
+├── public/
+│   ├── styles.css      # Custom styles
+│   ├── template.html   # HTML template
+│   ├── tailwind.css    # Built Tailwind CSS
+│   ├── prism.js        # Syntax highlighting
+│   ├── prism-light.css # Light theme
+│   └── prism-dark.css  # Dark theme (twilight)
+├── tailwind.config.js  # Tailwind configuration
+└── package.json        # Dependencies and scripts
+```
+
+### Development Commands
+
+```bash
+# Build CSS
+pnpm run build:css
+
+# Watch for CSS changes
+pnpm run watch
+
+# Start development server
+pnpm run dev
 ```
 
 ### Dependencies
@@ -129,7 +157,9 @@ md-server/
 - **marked**: Markdown parser
 - **commander**: CLI argument parsing
 - **chalk**: Terminal color output
-- **tailwindcss**: Styling (via CDN)
+- **prismjs**: Syntax highlighting
+- **tailwindcss**: Styling framework
+- **@tailwindcss/typography**: Typography plugin
 
 ## License
 
