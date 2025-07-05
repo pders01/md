@@ -26,7 +26,7 @@ fi
 
 # Create symlink
 echo "🔗 Creating global symlink..."
-sudo ln -sf "$(pwd)/dist/md-server.js" /usr/local/bin/md-server
+sudo ln -sf "$(pwd)/dist/index.js" /usr/local/bin/md-server
 sudo chmod +x /usr/local/bin/md-server
 
 echo "✅ Installation complete!"

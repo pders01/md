@@ -17,7 +17,7 @@
     "build": "ncc build cli.js -o dist",
     "build:css": "tailwindcss -i src/styles/tailwind.css -o public/tailwind.css --minify",
     "watch": "tailwindcss -i src/styles/tailwind.css -o public/tailwind.css --watch",
-    "preview": "node dist/md-server.js --port 3000",
+    "preview": "node dist/index.js --port 3000",
     "prepublishOnly": "npm run build:css && npm run build"
   },
   "keywords": [
