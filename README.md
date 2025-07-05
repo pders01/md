@@ -160,7 +160,7 @@ function greet(name) {
 
 [Visit GitHub](https://github.com)
 
-![Example Image](https://via.placeholder.com/300x200)
+![Example Image](https://picsum.photos/400/300)
 
 ### Tables
 
