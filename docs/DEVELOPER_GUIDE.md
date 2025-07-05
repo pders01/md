@@ -20,11 +20,11 @@ _This project was **vibe coded** with AI pair programming!_
    pnpm run build
    ```
 
-   This will generate `dist/md-server.js`.
+   This will generate `dist/index.js`.
 
 3. **Start the server:**
    ```bash
-   node dist/md-server.js
+   node dist/index.js
    ```
 
 4. **Open your browser:**
@@ -36,16 +36,16 @@ _This project was **vibe coded** with AI pair programming!_
 
 ```bash
 # Start with default settings (port 3000, current directory)
-node dist/md-server.js
+node dist/index.js
 
 # Use a different port
-node dist/md-server.js --port 8080
+node dist/index.js --port 8080
 
 # Serve from a specific directory
-node dist/md-server.js --directory ./docs
+node dist/index.js --directory ./docs
 
 # Use a different host
-node dist/md-server.js --host 0.0.0.0
+node dist/index.js --host 0.0.0.0
 ```
 
 ### Command Line Options
@@ -60,13 +60,13 @@ node dist/md-server.js --host 0.0.0.0
 
 ```bash
 # Serve markdown files from current directory
-node dist/md-server.js
+node dist/index.js
 
 # Serve from a documentation folder on port 8080
-node dist/md-server.js --port 8080 --directory ./docs
+node dist/index.js --port 8080 --directory ./docs
 
 # Make server accessible from other devices
-node dist/md-server.js --host 0.0.0.0 --port 3000
+node dist/index.js --host 0.0.0.0 --port 3000
 ```
 
 ## 🌟 Features

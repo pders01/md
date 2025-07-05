@@ -4,7 +4,11 @@ A simple CLI tool that serves markdown files as HTML with beautiful Tailwind CSS
 
 ---
 
-_This project was **vibe coded** with AI pair programming!_
+~~This project was **vibe coded** with AI pair programming!~~
+Seemingly you only **vibe code** if you don't review anything and let the agents
+do all the work. So this is probably less vibe coded and I am just too lazy to write
+these simple things manually anymore. But there might still be AI slop lingering as
+I use this script, but it's low to non-existent stakes.
 
 ---
 
@@ -68,7 +72,7 @@ Or create a manual symlink:
 
 ```bash
 # Create a symlink to the built CLI
-ln -s "$(pwd)/dist/md-server.js" /usr/local/bin/md-server
+ln -s "$(pwd)/dist/index.js" /usr/local/bin/md-server
 
 # Make it executable
 chmod +x /usr/local/bin/md-server
@@ -227,18 +231,14 @@ For more detailed information, see:
 - **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Development setup, project structure, and contribution guidelines
 - **[Markdown Features](docs/MARKDOWN_FEATURES.md)** - Complete demonstration of all supported markdown features
 
-## Homebrew Tap Setup
+## Homebrew Tap
 
-To make this available via Homebrew, you'll need to:
+You can install md-server directly from the official Homebrew tap:
 
-1. Create a new repository named `homebrew-md`
-2. Copy the `Formula/` directory to that repository
-3. Update the formula URL to point to your repository
-4. Users can then install with:
-   ```bash
-   brew tap pders01/md
-   brew install md-server
-   ```
+```bash
+brew tap pders01/md
+brew install md-server
+```
 
 ## License
 
