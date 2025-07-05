@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="/static/tailwind.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+    <link href="/static/prism-light.css" rel="stylesheet" media="(prefers-color-scheme: light)">
+    <link href="/static/prism-dark.css" rel="stylesheet" media="(prefers-color-scheme: dark)">
+    <script src="/static/prism.js"></script>
+</head>
+<body>
+    {{#if showBackButton}}
+    <a href="/" class="back-link">←</a>
+    {{/if}}
+    
+    <main>
+        <div class="prose">
+            {{content}}
+        </div>
+    </main>
+    
+    <script src="/static/prism.js"></script>
+</body>
+</html> 
