@@ -107,7 +107,7 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
         return;
       }
       
-      let content = '<h1>Markdown Files</h1>';
+      let content = `<h1>${path.resolve(directory)}</h1>`;
       
       if (markdownFiles.length > 0) {
         content += `<h2>Files (${markdownFiles.length})</h2>`;
@@ -195,7 +195,7 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
             markdownFiles.push(file);
           }
         }
-        let content = `<h1>${subDir}/${subPath}</h1>`;
+        let content = `<h1>${fullPath}</h1>`;
         
         if (markdownFiles.length > 0) {
           content += `<h2>Files (${markdownFiles.length})</h2>`;
@@ -292,7 +292,7 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
           }
         }
         
-        let content = `<h1>${subDir}/</h1>`;
+        let content = `<h1>${fullPath}</h1>`;
         
         if (markdownFiles.length > 0) {
           content += `<h2>Files (${markdownFiles.length})</h2>`;
