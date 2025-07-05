@@ -61,7 +61,7 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
   });
   
   // Handle root path - show directory listing
-  app.get('/', async (req, res) => {
+  app.get('/', async (_, res) => {
     try {
       const files = await fs.readdir(directory);
       const markdownFiles = [];
@@ -69,8 +69,22 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
       
       for (const file of files) {
         const filePath = path.join(directory, file);
-        const stat = await fs.stat(filePath);
-        
+        let stat;
+        try {
+          stat = await fs.lstat(filePath);
+        } catch {
+          continue; // skip unreadable files
+        }
+
+        if (stat.isSymbolicLink()) {
+          try {
+            stat = await fs.stat(filePath); // follow the symlink
+          } catch {
+            continue; // skip broken symlinks
+          }
+        }
+
+        // Now stat refers to the target (if symlink), or the file itself (if not)
         if (stat.isDirectory()) {
           // Check if directory contains markdown files
           try {
@@ -126,8 +140,22 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
     const fullPath = path.join(directory, subDir, subPath);
     
     try {
-      const stat = await fs.stat(fullPath);
-      
+      let stat;
+      try {
+        stat = await fs.lstat(fullPath);
+      } catch {
+        return res.status(404).send('File not found');
+      }
+
+      if (stat.isSymbolicLink()) {
+        try {
+          stat = await fs.stat(fullPath); // follow the symlink
+        } catch {
+          return res.status(404).send('File not found');
+        }
+      }
+
+      // Now stat refers to the target (if symlink), or the file itself (if not)
       if (stat.isDirectory()) {
         // Show directory listing
         const files = await fs.readdir(fullPath);
@@ -136,8 +164,22 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
         
         for (const file of files) {
           const filePath = path.join(fullPath, file);
-          const fileStat = await fs.stat(filePath);
-          
+          let fileStat;
+          try {
+            fileStat = await fs.lstat(filePath);
+          } catch {
+            continue; // skip unreadable files
+          }
+
+          if (fileStat.isSymbolicLink()) {
+            try {
+              fileStat = await fs.stat(filePath); // follow the symlink
+            } catch {
+              continue; // skip broken symlinks
+            }
+          }
+
+          // Now fileStat refers to the target (if symlink), or the file itself (if not)
           if (fileStat.isDirectory()) {
             // Check if directory contains markdown files
             try {
@@ -153,7 +195,6 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
             markdownFiles.push(file);
           }
         }
-        
         let content = `<h1>${subDir}/${subPath}</h1>`;
         
         if (markdownFiles.length > 0) {
@@ -195,8 +236,22 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
     const fullPath = path.join(directory, subDir);
     
     try {
-      const stat = await fs.stat(fullPath);
-      
+      let stat;
+      try {
+        stat = await fs.lstat(fullPath);
+      } catch {
+        return res.status(404).send('Directory not found');
+      }
+
+      if (stat.isSymbolicLink()) {
+        try {
+          stat = await fs.stat(fullPath); // follow the symlink
+        } catch {
+          return res.status(404).send('Directory not found');
+        }
+      }
+
+      // Now stat refers to the target (if symlink), or the directory itself (if not)
       if (stat.isDirectory()) {
         // Show directory listing
         const files = await fs.readdir(fullPath);
@@ -205,8 +260,22 @@ export function startServer({ port = 3000, directory = '.', host = 'localhost' }
         
         for (const file of files) {
           const filePath = path.join(fullPath, file);
-          const fileStat = await fs.stat(filePath);
-          
+          let fileStat;
+          try {
+            fileStat = await fs.lstat(filePath);
+          } catch {
+            continue; // skip unreadable files
+          }
+
+          if (fileStat.isSymbolicLink()) {
+            try {
+              fileStat = await fs.stat(filePath); // follow the symlink
+            } catch {
+              continue; // skip broken symlinks
+            }
+          }
+
+          // Now fileStat refers to the target (if symlink), or the file itself (if not)
           if (fileStat.isDirectory()) {
             // Check if directory contains markdown files
             try {
