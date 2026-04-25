@@ -1,7 +1,7 @@
 {
   "name": "@jpahd/md-server",
-  "version": "1.1.2",
-  "description": "A CLI tool that serves markdown files as HTML with Tailwind styling",
+  "version": "1.1.3",
+  "description": "DEPRECATED — use `mdv serve` from https://github.com/pders01/mdv",
   "main": "src/server.js",
   "type": "module",
   "bin": {

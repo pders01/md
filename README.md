@@ -1,245 +1,56 @@
-# Markdown Server
+# md-server (deprecated)
 
-A simple CLI tool that serves markdown files as HTML with beautiful Tailwind CSS styling and automatic dark/light theme support.
+> ⚠️ **This package is deprecated.** Its functionality has been folded
+> into [`mdv`](https://github.com/pders01/mdv) as `mdv serve`.
+> Please switch — this package will receive no further releases.
 
----
+## Why
 
-~~This project was **vibe coded** with AI pair programming!~~
-Seemingly you only **vibe code** if you don't review anything and let the agents
-do all the work. So this is probably less vibe coded and I am just too lazy to write
-these simple things manually anymore. But there might still be AI slop lingering as
-I use this script, but it's low to non-existent stakes.
+`md-server` and `mdv` (a terminal markdown viewer) shared the same
+goal: make markdown easy to read wherever you are. They've been merged
+into a single tool with two modes:
 
----
+- `mdv ./docs` — terminal UI with vim-style keybindings
+- `mdv serve ./docs` — HTTP server with the same vim keymap on the web
 
-## Features
+The serve mode replaces `md-server` entirely, with extras the old
+package didn't have:
 
-- 🚀 **Fast & Lightweight**: Built with Express.js
-- 🎨 **Beautiful Styling**: Uses Tailwind CSS with typography plugin
-- 🌙 **Dark/Light Mode**: Automatic theme switching based on system preferences
-- 📁 **Directory Listing**: Automatically lists all markdown files in the directory
-- 🔗 **Smart URLs**: Access files with or without the `.md` extension
-- 📱 **Responsive**: Works great on desktop and mobile devices
-- 💻 **Syntax Highlighting**: Code blocks with Prism.js (light/twilight themes)
-- 🎯 **Minimal UI**: Clean, distraction-free reading experience
+- Same Shiki syntax highlighting as the TUI (any of 30+ themes)
+- Live reload over WebSocket on `--watch`
+- Mermaid diagrams (locally vendored, no CDN)
+- Vim-style keyboard navigation (j/k, Tab panes, `/` search, etc.)
+- WAI-ARIA tree sidebar with arrow-key support
+- Single binary distribution via `bun build --compile`
 
-## Installation
+## Migration
 
-### Option 1: Homebrew (Recommended)
-
-```bash
-# Add the tap
-brew tap pders01/md
-
-# Install the CLI
-brew install md-server
-```
-
-### Option 2: Manual Installation
+Install `mdv`:
 
 ```bash
-# Clone the repository
-git clone https://github.com/pders01/md.git
-cd md
-
-# Install dependencies
-pnpm install
-
-# Build the CLI
-pnpm run build
+brew install pders01/mdv/mdv
 ```
 
-### Option 3: Global Symlink (Development)
+Or download a binary from
+[Releases](https://github.com/pders01/mdv/releases).
 
-For easy development and testing, you can create a global symlink:
+Then swap commands:
 
-```bash
-# From the project directory
-pnpm link
+| Old `md-server`              | New `mdv serve`                |
+| ---------------------------- | ------------------------------ |
+| `md-server`                  | `mdv serve .`                  |
+| `md-server -d ./docs`        | `mdv serve ./docs`             |
+| `md-server -p 3000`          | `mdv serve . -p 3000`          |
+| `md-server -h 0.0.0.0`       | `mdv serve . --host 0.0.0.0`   |
 
-# Now you can run from anywhere
-md-server --port 3000
-```
+## Archive
 
-Or use the provided install script:
-
-```bash
-# Run the install script (requires sudo)
-./scripts/install.sh
-```
-
-Or create a manual symlink:
-
-```bash
-# Create a symlink to the built CLI
-ln -s "$(pwd)/dist/index.js" /usr/local/bin/md-server
-
-# Make it executable
-chmod +x /usr/local/bin/md-server
-
-# Now you can run from anywhere
-md-server --port 3000
-```
-
-To uninstall, run: `sudo rm /usr/local/bin/md-server` or use `./scripts/uninstall.sh`
-
-## Usage
-
-### Running the Server
-
-```bash
-# Start with default settings (port 3000, current directory)
-md-server
-
-# Custom port and directory
-md-server --port 8080 --directory ./docs
-```
-
-### Command Line Options
-
-- `-p, --port <port>`: Port to run the server on (default: 3000)
-- `-d, --directory <dir>`: Directory to serve markdown files from (default: current directory)
-- `-h, --host <host>`: Host to bind the server to (default: localhost)
-
-## Examples
-
-### Basic Usage
-
-```bash
-# Serve markdown files from current directory
-md-server
-
-# Serve from a specific directory
-md-server --directory ./my-docs
-
-# Use a different port
-md-server --port 8080
-```
-
-### File Access
-
-Once the server is running, you can access your markdown files at:
-
-- `http://localhost:3000/` - Directory listing
-- `http://localhost:3000/README.md` - View README.md
-- `http://localhost:3000/README` - Same as above (extension optional)
-
-## Markdown Features
-
-The server supports all standard markdown features with enhanced styling:
-
-### Headers
-
-# H1 Header
-## H2 Header
-### H3 Header
-
-### Lists
-
-- Unordered list item 1
-- Unordered list item 2
-  - Nested item
-  - Another nested item
-
-1. Ordered list item 1
-2. Ordered list item 2
-3. Ordered list item 3
-
-### Code
-
-Inline code: `console.log('Hello, World!')`
-
-```javascript
-// Code block with syntax highlighting
-function greet(name) {
-  return `Hello, ${name}!`;
-}
-```
-
-### Links and Images
-
-[Visit GitHub](https://github.com)
-
-![Example Image](https://picsum.photos/400/300)
-
-### Tables
-
-| Feature | Description | Status |
-|---------|-------------|--------|
-| Markdown Support | Full markdown parsing | ✅ |
-| Tailwind Styling | Beautiful, responsive design | ✅ |
-| Dark/Light Mode | Automatic theme switching | ✅ |
-| Syntax Highlighting | Prism.js with light/twilight themes | ✅ |
-| Directory Listing | Auto-generated file index | ✅ |
-| CLI Interface | Easy command-line usage | ✅ |
-
-### Blockquotes
-
-> This is a blockquote. It can contain multiple lines and is styled with a left border.
-
-## Development
-
-### Project Structure
-
-```
-md/
-├── cli.js              # CLI entry point
-├── src/
-│   ├── server.js       # Express server logic
-│   └── styles/
-│       └── tailwind.css # Tailwind source styles
-├── public/
-│   ├── styles.css      # Custom styles
-│   ├── template.html   # HTML template
-│   ├── tailwind.css    # Built Tailwind CSS
-│   ├── prism.js        # Syntax highlighting
-│   ├── prism-light.css # Light theme
-│   └── prism-dark.css  # Dark theme (twilight)
-├── tailwind.config.js  # Tailwind configuration
-├── vite.config.js      # Vite configuration
-└── package.json        # Dependencies and scripts
-```
-
-### Development Commands
-
-```bash
-# Build CSS
-pnpm run build:css
-
-# Watch for CSS changes
-pnpm run watch
-
-# Start development server
-pnpm run dev
-```
-
-### Dependencies
-
-- **express**: Web server framework
-- **marked**: Markdown parser
-- **commander**: CLI argument parsing
-- **chalk**: Terminal color output
-- **prismjs**: Syntax highlighting
-- **tailwindcss**: Styling framework
-- **@tailwindcss/typography**: Typography plugin
-- **vite**: Bundler for development and production
-
-## Documentation
-
-For more detailed information, see:
-
-- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Development setup, project structure, and contribution guidelines
-- **[Markdown Features](docs/MARKDOWN_FEATURES.md)** - Complete demonstration of all supported markdown features
-
-## Homebrew Tap
-
-You can install md-server directly from the official Homebrew tap:
-
-```bash
-brew tap pders01/md
-brew install md-server
-```
+The original README and source are preserved in git history. The last
+non-deprecated release is tagged
+[`v1.1.2`](https://github.com/pders01/md/releases/tag/v1.1.2). If you
+specifically need the old Express + Tailwind + Prism stack, that
+release is the last one.
 
 ## License
 
-MIT License - feel free to use this project for your own needs! 
+MIT

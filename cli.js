@@ -29,7 +29,7 @@ const program = new Command();
 
 program
   .name('md-server')
-  .description('A CLI tool that serves markdown files as HTML with Tailwind styling')
+  .description('DEPRECATED — use `mdv serve` from https://github.com/pders01/mdv')
   .version(version)
   .option('-p, --port <port>', 'Port to run the server on', '3000')
   .option('-d, --directory <dir>', 'Directory to serve markdown files from', '.')
@@ -37,6 +37,14 @@ program
   .parse();
 
 const options = program.opts();
+
+// Deprecation banner: this package's functionality has moved to `mdv serve`
+// in https://github.com/pders01/mdv. Print on every startup so users running
+// older installs see the migration path even without checking the README.
+console.log(chalk.yellow.bold('⚠ md-server is deprecated.'));
+console.log(chalk.yellow('  Functionality has moved to `mdv serve` — see'));
+console.log(chalk.yellow('  https://github.com/pders01/mdv for the migration.'));
+console.log();
 
 console.log(chalk.blue('🚀 Starting Markdown Server...'));
 console.log(chalk.gray(`📁 Serving from: ${options.directory}`));
